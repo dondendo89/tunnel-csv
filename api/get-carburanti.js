@@ -1,22 +1,22 @@
 // api/get-carburanti.js
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
-export default async function handler(request, response) {
+module.exports = async (req, res) => {
   const csvUrl = "https://www.mimit.gov.it/images/stories/carburanti/MediaRegionaleStradale.csv";
 
   try {
-    const res = await fetch(csvUrl);
+    const response = await fetch(csvUrl);
 
-    if (!res.ok) {
-      throw new Error(`Failed to fetch CSV: ${res.statusText}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch CSV: ${response.statusText}`);
     }
 
-    const csvData = await res.text();
+    const csvData = await response.text();
     
     // Invia il contenuto del CSV come risposta
-    response.status(200).send(csvData);
+    res.status(200).send(csvData);
 
   } catch (error) {
-    response.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
-}
+};
